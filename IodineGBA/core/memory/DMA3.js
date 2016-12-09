@@ -41,9 +41,9 @@ GameBoyAdvanceDMA3.prototype.initialize = function () {
 }
 GameBoyAdvanceDMA3.prototype.validateDMASource = function (address) {
     address = address | 0;
-    if ((address | 0) >= 0x2000000) {
+    //if ((address | 0) >= 0x2000000) {
         this.source = address | 0;
-    }
+    //}
 }
 GameBoyAdvanceDMA3.prototype.writeDMASource8_0 = function (data) {
     data = data | 0;

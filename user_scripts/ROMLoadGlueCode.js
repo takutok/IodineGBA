@@ -9,11 +9,21 @@
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 function attachBIOS(BIOS) {
+    var b;
     try {
-        IodineGUI.Iodine.attachBIOS(new Uint8Array(BIOS));
+        b = new Uint8Array(BIOS)
     }
     catch (error) {
-        IodineGUI.Iodine.attachBIOS(BIOS);
+        b = BIOS;
+    }
+
+    IodineGUI.Iodine.attachBIOS(b);
+
+    // cache bios in browser local storage
+    try {
+        localStorage.setItem('GBA_BIOS', arrayToBase64(b));
+    }
+    catch(e) {
     }
 }
 function attachROM(ROM) {

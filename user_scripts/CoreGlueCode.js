@@ -89,6 +89,9 @@ window.onload = function () {
     registerGUIEvents();
     //Register GUI settings.
     registerGUISettings();
+
+    //Register Web Storage
+    registerWebStorage();
 }
 function registerIodineHandler() {
     try {
@@ -141,3 +144,13 @@ function registerAudioHandler() {
     IodineGUI.mixerInput = new GlueCodeMixerInput(Mixer);
     IodineGUI.Iodine.attachAudioHandler(IodineGUI.mixerInput);
 }
+
+function registerWebStorage() {
+    var b64 = localStorage.getItem('GBA_BIOS');
+    if(b64 != null) {
+        document.getElementById("bios_load").setAttribute("disabled","disabled");
+        var b = base64ToArray(b64);
+        IodineGUI.Iodine.attachBIOS(b);
+    }
+}
+

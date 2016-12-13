@@ -89,3 +89,17 @@ function processDownload(parentObj, attachHandler) {
         attachHandler(dataArray);
     }
 }
+
+function loadRegisteredROM(){
+        var ajax = new XMLHttpRequest();
+    ajax.onload = function (e) {
+        if (this.status === 200) {
+            var rom_json = JSON.parse(this.responseText);
+            var path = rom_json["rom"]["path"];
+            downloadFile(path, function(){ processDownload(this, attachROM); });
+        }
+    };
+    ajax.overrideMimeType("application/json");
+    ajax.open("GET", "rom.json", true);
+    ajax.send(null);
+}

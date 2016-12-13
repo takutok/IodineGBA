@@ -92,6 +92,9 @@ window.onload = function () {
 
     //Register Web Storage
     registerWebStorage();
+
+    //Register onload ROM
+    registerOnLoadROM();
 }
 function registerIodineHandler() {
     try {
@@ -154,3 +157,6 @@ function registerWebStorage() {
     }
 }
 
+function registerOnLoadROM(){
+    loadRegisteredROM();
+}

@@ -1,6 +1,6 @@
 "use strict";
 /*
- Copyright (C) 2012-2016 Grant Galitz
+ Copyright (C) 2012-2017 Grant Galitz
 
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -19,6 +19,7 @@ var IodineGUI = {
     isPlaying:false,
     startTime:(+(new Date()).getTime()),
     mixerInput:null,
+    currentSpeed:[false,0],
     defaults:{
         timerRate:16,
         sound:true,
@@ -27,7 +28,7 @@ var IodineGUI = {
         toggleSmoothScaling:true,
         toggleDynamicSpeed:false,
         toggleOffthreadGraphics:true,
-        toggleOffthreadCPU:(navigator.userAgent.indexOf('AppleWebKit') == -1),
+        toggleOffthreadCPU:(navigator.userAgent.indexOf('AppleWebKit') == -1 || (navigator.userAgent.indexOf('Windows NT 10.0') != -1 && navigator.userAgent.indexOf('Trident') == -1)),
         keyZonesGBA:[
             //Use this to control the GBA key mapping:
             //A:
@@ -54,13 +55,13 @@ var IodineGUI = {
         keyZonesControl:[
             //Use this to control the emulator function key mapping:
             //Volume Down:
-            56,
-            //Volume Up:
             55,
+            //Volume Up:
+            56,
             //Speed Up:
-            51,
-            //Slow Down:
             52,
+            //Slow Down:
+            51,
             //Reset Speed:
             53,
             //Toggle Fullscreen:
@@ -141,6 +142,12 @@ function registerBlitterHandler() {
     IodineGUI.Blitter = new GfxGlueCode(240, 160);
     IodineGUI.Blitter.attachCanvas(document.getElementById("emulator_target"));
     IodineGUI.Iodine.attachGraphicsFrameHandler(IodineGUI.Blitter);
+    IodineGUI.Blitter.attachGfxPostCallback(function () {
+        if (IodineGUI.currentSpeed[0]) {
+            var speedDOM = document.getElementById("speed");
+            speedDOM.textContent = "Speed: " + IodineGUI.currentSpeed[1] + "%";
+        }
+    });
 }
 function registerAudioHandler() {
     var Mixer = new GlueCodeMixer();
